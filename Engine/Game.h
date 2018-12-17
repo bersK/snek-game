@@ -51,5 +51,6 @@ private:
 	Location delta_loc = { 1,0 };
 	static constexpr int snakeMoveRate = 20;
 	int snakeMoveCounter = 0;
+	bool gameIsOver = false;
 	std::mt19937 rng;
 };

@@ -44,6 +44,7 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+
 	std::uniform_int_distribution<int> colorDist(0, 255);
 	for (int y = 0; y < brd.GetGridHeight(); y++)
 	{

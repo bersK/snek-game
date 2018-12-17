@@ -13,7 +13,7 @@ public:
 	int GetGridHeight() const;
 private:
 	static constexpr int cellDimension = 20;
-	static constexpr int width = 10;
-	static constexpr int height = 10;
+	static constexpr int width = 25;
+	static constexpr int height = 25;
 	Graphics& gfx;
 };

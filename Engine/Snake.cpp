@@ -28,6 +28,7 @@ void Snake::Segment::Draw(Board & brd) const
 	brd.DrawCell(loc, c);
 }
 
+
 Snake::Snake(const Location & loc)
 {
 	segments[0].InitHead(loc);
@@ -46,6 +47,7 @@ void Snake::Grow()
 {
 	if (nSegments < nSegmentsMax)
 	{
+		segments[nSegments].InitBody();
 		++nSegments;
 	}
 }

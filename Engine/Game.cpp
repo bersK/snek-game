@@ -53,7 +53,17 @@ void Game::UpdateModel()
 	else if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
 		delta_loc = { 1, 0 };
 	}
-	snek.MoveBy(delta_loc);
+	++snakeMoveCounter;
+	if (snakeMoveCounter > snakeMoveRate)
+	{
+		snakeMoveCounter = 0;
+		if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+		{
+			snek.Grow();
+		}
+		snek.MoveBy(delta_loc);
+	}
+	
 }
 
 void Game::ComposeFrame()

@@ -24,6 +24,7 @@ public:
 	void Grow();
 	void Draw(Board& brd)const;
 	bool IsInTileExceptEnd(const Location& target_loc) const;
+	bool IsInTile(const Location& target_loc) const;
 private:
 	static constexpr Color headColor = Colors::Yellow;
 	static constexpr Color bodyColor = Colors::White;

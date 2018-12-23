@@ -68,6 +68,19 @@ void Snake::Draw(Board & brd) const
 bool Snake::IsInTileExceptEnd(const Location & target_loc) const
 {
 	bool result = false;
+	for (int i = 0; i < nSegments - 1; ++i)
+	{
+		if (segments[i].GetLocation() == target_loc)
+		{
+			result = true;
+		}
+	}
+	return result;
+}
+
+bool Snake::IsInTile(const Location & target_loc) const
+{
+	bool result = false;
 	for (int i = 0; i < nSegments; ++i)
 	{
 		if (segments[i].GetLocation() == target_loc)

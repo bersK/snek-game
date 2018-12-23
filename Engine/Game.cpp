@@ -28,7 +28,9 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	brd(gfx),
 	rng(std::random_device()()),
-	snek({ 2,2 })
+	snek({ 2,2 }),
+	goal(rng, brd, snek),
+	brdOffset(20)
 {
 }
 
@@ -42,7 +44,16 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (!gameIsOver) {
+	if (!gameStarted && !gameIsOver)
+	{
+		SpriteCodex::DrawTitle(gfx.ScreenWidth / 2 - 213/2, gfx.ScreenHeight / 2 - 70, gfx);
+		
+		if (wnd.kbd.KeyIsPressed(VK_SPACE))
+		{
+			gameStarted = true;
+		}
+	}
+	else if (!gameIsOver && gameStarted) {
 		if (wnd.kbd.KeyIsPressed(VK_UP)) {
 			delta_loc = { 0, -1 };
 		}
@@ -60,18 +71,24 @@ void Game::UpdateModel()
 		if (snakeMoveCounter > snakeMoveRate)
 		{
 			snakeMoveCounter = 0;
-			const Location next = snek.GetNextHeadLoc(delta_loc);
-			if (!brd.IsInsideBoard(next) ||
-				snek.IsInTileExceptEnd(next))
+			const Location nextSnekLoc = snek.GetNextHeadLoc(delta_loc);
+			if (!brd.IsInsideBoard(nextSnekLoc) ||
+				snek.IsInTileExceptEnd(nextSnekLoc))
 			{
 				gameIsOver = true;
 			}
 			else {
-				if (wnd.kbd.KeyIsPressed(VK_CONTROL))
+				const bool snekEating = nextSnekLoc == goal.GetLocation();
+				if (snekEating)
 				{
 					snek.Grow();
 				}
 				snek.MoveBy(delta_loc);
+				if (snekEating)
+				{
+					snek.MoveBy(delta_loc);
+					goal.Respawn(rng, brd, snek);
+				}
 			}
 		}
 	}
@@ -80,7 +97,23 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+
+	//Draw border
+	//for (int x = 0; x < gfx.ScreenWidth; ++x)
+	//{
+	//	for (int y = 0; y < gfx.ScreenHeight; ++y)
+	//	{
+	//		if((x <= brdOffset) || (y <= brdOffset) || (y >= gfx.ScreenHeight - brdOffset) || (x >= gfx.ScreenWidth - brdOffset))
+	//		gfx.PutPixel(x, y, Colors::Cyan);
+	//		//if()
+	//	}
+	//}
+	
+
+	if (gameStarted) {
 	snek.Draw(brd);
+	goal.Draw(brd);
+	}
 	if (gameIsOver)
 	{
 		SpriteCodex::DrawGameOver(gfx.ScreenWidth/2 - 50,gfx.ScreenHeight/2 - 50, gfx);

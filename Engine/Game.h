@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Board.h"
 #include "Snake.h"
+#include "Goal.h"
 #include <random>
 
 class Game
@@ -46,11 +47,14 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	std::mt19937 rng;
 	Board brd;
 	Snake snek;
 	Location delta_loc = { 1,0 };
+	Goal goal;
+	int brdOffset;
 	static constexpr int snakeMoveRate = 20;
 	int snakeMoveCounter = 0;
 	bool gameIsOver = false;
-	std::mt19937 rng;
+	bool gameStarted = false;
 };

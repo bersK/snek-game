@@ -14,7 +14,7 @@ public:
 	bool IsInsideBoard(const Location& loc)const;
 private:
 	static constexpr int cellDimension = 20;
-	static constexpr int width = 25;
-	static constexpr int height = 25;
+	static constexpr int width = Graphics::ScreenWidth/cellDimension;
+	static constexpr int height = Graphics::ScreenHeight/cellDimension;
 	Graphics& gfx;
 };

@@ -1,33 +1,38 @@
 #include "Board.h"
 #include <assert.h>
 
-Board::Board(Graphics& gfx)
+Board::Board(Graphics& gfx, int offsetForTheGrid)
 	:
-	gfx(gfx)
+	gfx(gfx),
+	gridOffset(offsetForTheGrid)
 {
 
 }
 
 void Board::DrawCell(const Location& loc, Color c)
 {
-	assert(loc.x >= 0);
-	assert(loc.x < width);
-	assert(loc.y >= 0);
-	assert(loc.y < height);
+	assert(loc.x >= gridOffset);
+	assert(loc.x < width-gridOffset);
+	assert(loc.y >= gridOffset);
+	assert(loc.y < height-gridOffset);
 	gfx.DrawRectDim(loc.x*cellDimension, loc.y*cellDimension, cellDimension, cellDimension, c);
 }
 
 int Board::GetGridWidth() const
 {
-	return width;
+	return width-gridOffset;
 }
 
 int Board::GetGridHeight() const
 {
-	return height;
+	return height-gridOffset;
 }
 
 bool Board::IsInsideBoard(const Location & loc) const
 {
-	return loc.x <= width && loc.x >= 0 && loc.y >= 0 && loc.y <= height;
+	return 
+		loc.x <= (width-gridOffset) && 
+		loc.x >= gridOffset &&
+		loc.y >= gridOffset && 
+		loc.y <= (height-gridOffset);
 }

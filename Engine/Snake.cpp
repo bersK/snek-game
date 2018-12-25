@@ -7,9 +7,9 @@ void Snake::Segment::InitHead(const Location & in_loc)
 	c = Snake::headColor;
 }
 
-void Snake::Segment::InitBody()
+void Snake::Segment::InitBody(const Color& in_color)
 {
-	c = Snake::bodyColor;
+	c = in_color;
 }
 
 void Snake::Segment::Follow(const Segment & next)
@@ -33,10 +33,15 @@ const Location Snake::Segment::GetLocation() const
 	return loc;
 }
 
-
 Snake::Snake(const Location & loc)
 {
 	segments[0].InitHead(loc);
+	StoreInitLocation(loc);
+}
+
+void Snake::StoreInitLocation(const Location & init_loc)
+{
+	initLocation = init_loc;
 }
 
 void Snake::MoveBy(const Location & delta_loc)
@@ -52,9 +57,24 @@ void Snake::Grow()
 {
 	if (nSegments < nSegmentsMax)
 	{
-		segments[nSegments].InitBody();
+		if(nSegments%2 == 0)
+			segments[nSegments].InitBody(bodyColor);
+		else {
+			segments[nSegments].InitBody(bodyColorAlt);
+		}
 		++nSegments;
 	}
+}
+
+void Snake::ResetSnake()
+{
+	nSegments = 1;
+	segments[0].InitHead(initLocation);
+}
+
+int Snake::GetSnakeSegmentsCount()
+{
+	return nSegments;
 }
 
 void Snake::Draw(Board & brd) const

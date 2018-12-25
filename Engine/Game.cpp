@@ -26,9 +26,9 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	brd(gfx),
+	brd(gfx, 0),
 	rng(std::random_device()()),
-	snek({ 2,2 }),
+	snek({ 4,4 }),
 	goal(rng, brd, snek),
 	brdOffset(20)
 {
@@ -48,7 +48,7 @@ void Game::UpdateModel()
 	{
 		SpriteCodex::DrawTitle(gfx.ScreenWidth / 2 - 213/2, gfx.ScreenHeight / 2 - 70, gfx);
 		
-		if (wnd.kbd.KeyIsPressed(VK_SPACE))
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
 		{
 			gameStarted = true;
 		}
@@ -82,6 +82,19 @@ void Game::UpdateModel()
 				if (snekEating)
 				{
 					snek.Grow();
+					int sCount = snek.GetSnakeSegmentsCount();
+					if (sCount >= 3)
+					{
+						snakeMoveRate -= 1;
+					}
+					else if (sCount >= 5)
+					{
+						snakeMoveRate -= 1;
+					}
+					else if (sCount >= 10)
+					{
+						snakeMoveRate -= 1;
+					}
 				}
 				snek.MoveBy(delta_loc);
 				if (snekEating)
@@ -90,6 +103,16 @@ void Game::UpdateModel()
 					goal.Respawn(rng, brd, snek);
 				}
 			}
+		}
+	}
+	else if (gameIsOver)
+	{
+		if (wnd.kbd.KeyIsPressed(VK_SPACE))
+		{
+			gameIsOver = false;
+			gameStarted = false;
+			snek.ResetSnake();
+			snakeMoveRate = 20;
 		}
 	}
 	

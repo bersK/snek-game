@@ -53,7 +53,7 @@ private:
 	Location delta_loc = { 1,0 };
 	Goal goal;
 	int brdOffset;
-	static constexpr int snakeMoveRate = 20;
+	int snakeMoveRate = 20;
 	int snakeMoveCounter = 0;
 	bool gameIsOver = false;
 	bool gameStarted = false;
